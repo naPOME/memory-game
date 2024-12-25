@@ -1,7 +1,6 @@
 
 import './App.css'
 import { Button } from './components/Button'
-import Game from './pages/Game'
 
 function App() {
  
