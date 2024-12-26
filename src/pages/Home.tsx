@@ -16,6 +16,7 @@ const Home = () => {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-background">
+
       <h1 className="text-5xl font-bold mb-4 text-primary font-retro text-center">
         MEMORY GAME
       </h1>

@@ -7,7 +7,7 @@ import ThemeSelector from './components/ThemeSelector';
 function App() {
   return (
     <ThemeProvider>
-        <ThemeSelector/>
+        {/* <ThemeSelector/> */}
       <Router>
         <Routes>
         
