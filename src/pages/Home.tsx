@@ -24,7 +24,7 @@ const Home = () => {
       </p>
       <button
         onClick={handleStart}
-        className="px-8 py-2 bg-primary text-text rounded-xl font-bold text-xl font-retro border-4 border-accent hover:bg-accent hover:text-black transition duration-300 transform hover:scale-105"
+        className="px-8 py-2 bg-primary text-text rounded-xl font-bold text-xl font-retro border-2 border-accent hover:bg-accent hover:text-primary transition duration-300 transform hover:scale-105"
       >
         START GAME
       </button>
