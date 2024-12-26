@@ -1,31 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../Context/ThemeContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    console.log(`Current theme: ${theme}`);
+  }, [theme]);
 
   const handleStart = () => {
     navigate('/game');
   };
 
   return (
-    <div className="h-screen bg-black flex flex-col items-center justify-center text-white">
-
-      <div className="absolute inset-0 bg-stars bg-cover bg-center opacity-20 "></div>
-
-
-      <h1 className="text-6xl font-extrabold mb-4 text-cyan-400 retro-font">
+    <div className="h-screen flex flex-col items-center justify-center bg-background">
+      <h1 className="text-6xl font-extrabold mb-4 text-primary font-retro text-center">
         MEMORY GAME
       </h1>
-
- 
-      <p className="text-lg text-pink-400 mb-8 retro-font ">
+      <p className="text-lg text-accent mb-8 text-center font-retro">
         Can you match all the pairs? Let’s test your memory!
       </p>
-
       <button
         onClick={handleStart}
-        className="px-10 py-3 bg-pink-500 text-black font-bold text-lg retro-font border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black transition duration-300"
+        className="px-12 py-4 bg-primary text-text font-bold text-xl font-retro border-4 border-accent hover:bg-accent hover:text-black transition duration-300 transform hover:scale-105"
       >
         START GAME
       </button>

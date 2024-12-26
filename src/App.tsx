@@ -1,17 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './Context/ThemeContext';
 import Home from './pages/Home';
-import Game from './pages/Game';
+import ThemeSelector from './components/ThemeSelector';
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {/* <Route path="/game" element={<Game />} /> */}
-      </Routes>
-    </Router>
+    <ThemeProvider>
+        <ThemeSelector/>
+      <Router>
+        <Routes>
+        
+          <Route path="/" element={<Home />} />
+        
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;

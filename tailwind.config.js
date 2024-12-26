@@ -1,21 +1,54 @@
-/** @type {import('tailwindcss').Config} */
+const { createThemes } = require('tw-colors');
+
 module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", 
+    './src/**/*.{js,jsx,ts,tsx}',
+    './public/index.html',
   ],
   theme: {
-    extend: { fontFamily: {
-      retro: ['"Press Start 2P"', 'sans-serif'],
-      backgroundImage: {
-        stars: "radial-gradient(white 1px, transparent 1px), radial-gradient(white 1px, transparent 1px)",
+    extend: {
+      fontFamily: {
+        retro: ['"Press Start 2P"', 'sans-serif'],
       },
     },
   },
-
-  },
-  plugins: [require("daisyui")], 
-  daisyui: {
-    themes: ["light"], // Set the default theme
-  },
+  plugins: [
+    createThemes({
+      theme1: {
+        primary: '#4CAF50',
+        secondary: '#8BC34A',
+        accent: '#FFC107',
+        background: '#E8F5E9',  
+        text: '#1B5E20',         
+      },
+      theme2: {
+        primary: '#3F51B5',
+        secondary: '#03A9F4',
+        accent: '#E91E63',
+        background: '#E3F2FD',  
+        text: '#1A237E',         
+      },
+      theme3: {
+        primary: '#FF5722',
+        secondary: '#FFC107',
+        accent: '#4CAF50',
+        background: '#FFF3E0',  
+        text: '#D32F2F',         
+      },
+      theme4: {
+        primary: '#9C27B0',
+        secondary: '#673AB7',
+        accent: '#03A9F4',
+        background: '#F3E5F5',  
+        text: '#6A1B9A',        
+      },
+      theme5: {
+        primary: '#F44336',
+        secondary: '#E91E63',
+        accent: '#9C27B0',
+        background: '#FFEBEE', 
+        text: '#B71C1C',        
+      },
+    }),
+  ],
 };
