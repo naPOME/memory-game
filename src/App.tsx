@@ -1,16 +1,17 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Game from './pages/Game';
 
-import './App.css'
-import { Button } from './components/Button'
-
-function App() {
- 
+const App = () => {
   return (
-    <>
-     <h1 className='text-green-500'>Welcome to Memory game</h1>
-     <Button label='start' className=' '/>
-      
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/game" element={<Game />} /> */}
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;

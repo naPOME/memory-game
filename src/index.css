@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.retro-font {
+  font-family: 'Press Start 2P', sans-serif;
+}
+
+
+.bg-grid {
+    background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  @keyframes neon {
+    0%, 100% { text-shadow: 0 0 5px rgba(0, 255, 255, 0.514), 0 0 50px rgba(0, 255, 255, 0.705); }
+    50% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.74), 0 0 20px rgba(0, 255, 255, 0.76); }
+  }
+  .retro-font{
+    animation: neon 3.5s forwards ease-in-out ;
+  }
+
+ 
+  .bg-stars {
+    background: rgba(0, 0, 0, 0.445);
+    background-image: radial-gradient(rgba(236, 236, 236, 0.452) 1px, transparent 1px);
+    background-size: 15px 15px;
+    animation: blink 3s ease-in-out infinite;
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0.6;
+    }
+  }
+  

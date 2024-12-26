@@ -5,7 +5,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}", 
   ],
   theme: {
-    extend: {},
+    extend: { fontFamily: {
+      retro: ['"Press Start 2P"', 'sans-serif'],
+      backgroundImage: {
+        stars: "radial-gradient(white 1px, transparent 1px), radial-gradient(white 1px, transparent 1px)",
+      },
+    },
+  },
+
   },
   plugins: [require("daisyui")], 
   daisyui: {
