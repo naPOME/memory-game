@@ -5,10 +5,19 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}',
     './public/index.html',
   ],
+  safelist: [
+    {
+      pattern: /^font-/,
+    },
+  ],
   theme: {
     extend: {
       fontFamily: {
         retro: ['"Press Start 2P"', 'sans-serif'],
+        sans: ['"Roboto"', 'sans-serif'],
+        serif: ['"Merriweather"', 'serif'],
+        mono: ['"Courier New"', 'monospace'],
+        cursive: ['"Pacifico"', 'cursive'],
       },
     },
   },

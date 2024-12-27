@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ThemeSelector from './ThemeSelector';
+import { FontSelector } from './FontSelector';
 
 
 const Header = ({ score, moves }: { score: number; moves: number }) => {
@@ -38,7 +39,7 @@ const Header = ({ score, moves }: { score: number; moves: number }) => {
           <div className="absolute right-0 mt-2 w-44 bg-secondary text-background shadow-lg rounded-lg p-4">
             <h3 className="font-bold mb-2 ">Settings</h3>
             <ThemeSelector />
-            
+            <FontSelector/>
           </div>
         )}
       </div>

@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type Theme = 'theme1' | 'theme2' | 'theme3' | 'theme4' | 'theme5';
+type Font = 'retro' | 'sans' | 'serif' | 'mono' | 'cursive';
 
 interface ThemeContextProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  font: Font;
+  setFont: (font: Font) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -18,13 +21,22 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return (localStorage.getItem('theme') as Theme) || 'theme1';
   });
 
+  const [font, setFont] = useState<Font>(() => {
+    return (localStorage.getItem('font') as Font) || 'retro';
+  });
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-font', font);
+    localStorage.setItem('font', font);
+  }, [font]);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, font, setFont }}>
       {children}
     </ThemeContext.Provider>
   );
