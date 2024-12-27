@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { theme, font } = useTheme();
+  const {  font } = useTheme();
 
   // useEffect(() => {
   //   console.log(`Current theme: ${theme}`);
@@ -12,7 +12,7 @@ const Home = () => {
   // }, [theme, font]);
 
   const handleStart = () => {
-    navigate('/game');
+    navigate('/level');
   };
 
   return (

@@ -2,7 +2,7 @@ const { createThemes } = require('tw-colors');
 
 module.exports = {
   content: [
-    './src/**/*.{js,jsx,ts,tsx}',
+    './src/***/**/*.{js,jsx,ts,tsx}',
     './public/index.html',
   ],
   safelist: [

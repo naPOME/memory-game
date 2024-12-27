@@ -34,7 +34,7 @@ const Header = ({ score, moves }: { score: number; moves: number }) => {
           className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
           aria-label="Settings"
         >
-          <span className="">@</span>
+       <span className="text-xl">⚙️</span> 
         </button>
 
         {isSettingsOpen && (
