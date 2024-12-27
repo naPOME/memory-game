@@ -10,10 +10,10 @@ const fonts = [
 ];
 
 export const FontSelector = () => {
-  const { font, setFont } = useTheme();
+  const { font, setFont } = useTheme(); 
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleFontChange = (fontClassName) => {
+  const handleFontChange = (fontClassName: string) => {
     setFont(fontClassName);
     setIsOpen(false);
   };
@@ -22,7 +22,7 @@ export const FontSelector = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex items-center px-7 mt-2 text-left py-1 bg-primary text-xs rounded-xl border border-accent border-dashed shadow-md hover:bg-accent font-${font} text-background transition`}
+        className="flex items-center px-7 mt-2 text-left py-1 bg-primary text-xs rounded-xl border border-accent border-dashed shadow-md hover:bg-accent text-background transition"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -43,15 +43,15 @@ export const FontSelector = () => {
 
       {/* Dropdown */}
       {isOpen && (
-        <ul className="absolute mt-2 w-48 bg-white border border-gray-300 dark:border-gray-600 shadow-lg rounded z-10">
+        <ul className="absolute mt-2 w-48 bg-background  border border-gray-300  shadow-lg rounded z-10">
           {fonts.map((f) => (
             <li key={f.className}>
               <button
                 onClick={() => handleFontChange(f.className)}
-                className={`w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                className={`w-full text-left px-4 py-2 hover:bg-secondary ${
                   font === f.className
-                    ? 'bg-gray-300 text-black dark:bg-gray-600 dark:text-white'
-                    : 'text-black dark:text-white'
+                    ? 'bg-background text-text  '
+                    : 'text-text '
                 }`}
               >
                 {f.name}
