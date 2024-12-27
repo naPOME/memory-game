@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './Context/ThemeContext';
 import Home from './pages/Home';
-import ThemeSelector from './components/ThemeSelector';
+
+import Header from './components/Header';
 
 function App() {
   return (
-    <ThemeProvider>
+<div className='bg-background '>
         {/* <ThemeSelector/> */}
+        <Header score={1} moves={2}/>
       <Router>
         <Routes>
         
@@ -15,7 +17,7 @@ function App() {
         
         </Routes>
       </Router>
-    </ThemeProvider>
+      </div>
   );
 }
 
