@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useGame } from '../Context/GameContext';
-import { shuffleArray } from '../utill/Shuffle';
-import { useTheme } from '../Context/ThemeContext';
+import React, { useState } from 'react';
 
 interface Card {
   id: number;
@@ -11,35 +7,16 @@ interface Card {
 }
 
 const Game = () => {
-  const location = useLocation();
-  const { level, incrementMoves, updateScore, resetGame } = useGame();
-  const { font } = useTheme();
-
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<Card[]>([
+    { id: 1, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
+    { id: 2, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
+    { id: 3, image: 'https://via.placeholder.com/200x300.png?text=Image+2', matched: false },
+    { id: 4, image: 'https://via.placeholder.com/200x300.png?text=Image+2', matched: false },
+  ]);
   const [firstCard, setFirstCard] = useState<Card | null>(null);
   const [secondCard, setSecondCard] = useState<Card | null>(null);
   const [disabled, setDisabled] = useState(false);
-
-  // Initialize cards based on level
-  useEffect(() => {
-    resetGame();
-    const cardCount = level === 'medium' ? 24 : level === 'hard' ? 36 : 12;
-    const images = [
-      'https://picsum.photos/200/300',
-      'https://picsum.photos/201/300',
-      'https://picsum.photos/202/300',
-      'https://picsum.photos/203/300',
-      'https://picsum.photos/204/300',
-      'https://picsum.photos/205/300',
-    ];
-    const initialCards = Array.from({ length: cardCount / 2 }, (_, i) => ({
-      id: i,
-      image: images[i % images.length],
-      matched: false,
-    }));
-    const shuffledCards = shuffleArray([...initialCards, ...initialCards]);
-    setCards(shuffledCards);
-  }, [level, resetGame]);
+  const [matchedCards, setMatchedCards] = useState<number[]>([]); 
 
   // Handle card click
   const handleCardClick = (card: Card) => {
@@ -50,7 +27,6 @@ const Game = () => {
     } else {
       setSecondCard(card);
       setDisabled(true);
-      incrementMoves();
 
       if (firstCard.image === card.image) {
         // Cards match
@@ -59,7 +35,10 @@ const Game = () => {
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
-        updateScore(10);
+        
+        setMatchedCards([firstCard.id, card.id]);
+        
+        setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
       } else {
         // No match
@@ -75,45 +54,17 @@ const Game = () => {
     setDisabled(false);
   };
 
-  // Restart game
-  const handleRestart = () => {
-    resetGame();
-    setCards([]);
-    setTimeout(() => {
-      const cardCount = level === 'medium' ? 24 : level === 'hard' ? 36 : 12;
-      const images = [
-        'https://picsum.photos/200/300',
-        'https://picsum.photos/201/300',
-        'https://picsum.photos/202/300',
-        'https://picsum.photos/203/300',
-        'https://picsum.photos/204/300',
-        'https://picsum.photos/205/300',
-      ];
-      const initialCards = Array.from({ length: cardCount / 2 }, (_, i) => ({
-        id: i,
-        image: images[i % images.length],
-        matched: false,
-      }));
-      const shuffledCards = shuffleArray([...initialCards, ...initialCards]);
-      setCards(shuffledCards);
-    }, 100);
-  };
-
   return (
-    <div className={`flex flex-col items-center min-h-screen font-${font} bg-gray-100 p-4`}>
-      <h1 className="text-4xl font-bold text-gray-700 mb-6">Memory Game</h1>
-      <div
-        className={`grid gap-4 ${
-          level === 'easy' ? 'grid-cols-6' : level === 'medium' ? 'grid-cols-8' : 'grid-cols-12'
-        }`}
-      >
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
+      <h1 className="text-4xl font-bold text-gray-700 mb-6">Memory Game </h1>
+      <div className="grid gap-4 grid-cols-2">
         {cards.map((card, index) => (
           <div
             key={index}
             onClick={() => handleCardClick(card)}
             className={`card w-32 h-20 cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
               card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
-            }`}
+            } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
           >
             <div className="card-inner w-full h-full relative">
               <div className="card-front absolute w-full h-full bg-gray-300 rounded-lg flex items-center justify-center backface-hidden">
@@ -130,12 +81,6 @@ const Game = () => {
           </div>
         ))}
       </div>
-      <button
-        onClick={handleRestart}
-        className="mt-8 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-200"
-      >
-        Restart Game
-      </button>
     </div>
   );
 };

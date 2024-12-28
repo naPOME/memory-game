@@ -15,12 +15,21 @@ export const Card = ({ id, image, isFlipped, isMatched, onFlip }: CardProps) => 
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      if (!isFlipped && !isMatched) {
+        onFlip(id);
+      }
+    }
+  };
+
   return (
     <div
       className={`card relative w-24 h-32 sm:w-32 sm:h-40 md:w-40 md:h-48 cursor-pointer transition-transform duration-300 transform-style-preserve-3d ${
         isFlipped ? 'rotate-y-180' : ''
       } ${isMatched ? 'opacity-50 pointer-events-none' : ''}`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       data-id={id}
       role="button"
       aria-label={isFlipped ? `Card with image ${image}` : 'Unflipped card'}
