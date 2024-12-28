@@ -9,24 +9,36 @@ type CardProps = {
 };
 
 export const Card = ({ id, image, isFlipped, isMatched, onFlip }: CardProps) => {
+  const handleClick = () => {
+    if (!isFlipped && !isMatched) {
+      onFlip(id);
+    }
+  };
+
   return (
     <div
-      className={`card bg-base-100 w-96 shadow-xl transition-transform duration-300 
-        ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched opacity-50' : ''}`}
-      onClick={() => {
-        if (!isFlipped && !isMatched) {
-          onFlip(id);
-        }
-      }}
-      data-id={id} 
+      className={`card relative w-24 h-32 sm:w-32 sm:h-40 md:w-40 md:h-48 cursor-pointer transition-transform duration-300 transform-style-preserve-3d ${
+        isFlipped ? 'rotate-y-180' : ''
+      } ${isMatched ? 'opacity-50 pointer-events-none' : ''}`}
+      onClick={handleClick}
+      data-id={id}
+      role="button"
+      aria-label={isFlipped ? `Card with image ${image}` : 'Unflipped card'}
+      tabIndex={0}
     >
-      {isFlipped ? (
-        <img src={image} alt="Card face" className="card-face w-full h-full object-cover" />
-      ) : (
-        <div className="card-back bg-gray-300 flex items-center justify-center">
-          Card Back
-        </div>
-      )}
+      {/* Card Front (Image) */}
+      <div className="card-face absolute w-full h-full bg-white rounded-lg shadow-md flex items-center justify-center backface-hidden transform rotate-y-180">
+        <img
+          src={image}
+          alt="Card face"
+          className="w-full h-full object-cover rounded-lg"
+        />
+      </div>
+
+      {/* Card Back (Default) */}
+      <div className="card-back absolute w-full h-full bg-gray-300 rounded-lg shadow-md flex items-center justify-center backface-hidden">
+        <span className="text-xl font-bold text-gray-700">?</span>
+      </div>
     </div>
   );
 };
