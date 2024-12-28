@@ -14,6 +14,7 @@ const Game = () => {
     { id: 2, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
     { id: 3, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
     { id: 4, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
+    
   ]);
   const [firstCard, setFirstCard] = useState<Card | null>(null);
   const [secondCard, setSecondCard] = useState<Card | null>(null);
