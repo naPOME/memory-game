@@ -25,7 +25,7 @@ export const Card = ({ id, image, isFlipped, isMatched, onFlip }: CardProps) => 
 
   return (
     <div
-      className={`card relative w-24 h-32 sm:w-32 sm:h-40 md:w-40 md:h-48 cursor-pointer transition-transform duration-300 transform-style-preserve-3d ${
+      className={`card relative   w-24 h-32 sm:w-32 sm:h-40 md:w-40 md:h-48 cursor-pointer transition-transform duration-300 transform-style-preserve-3d ${
         isFlipped ? 'rotate-y-180' : ''
       } ${isMatched ? 'opacity-50 pointer-events-none' : ''}`}
       onClick={handleClick}
@@ -45,8 +45,8 @@ export const Card = ({ id, image, isFlipped, isMatched, onFlip }: CardProps) => 
       </div>
 
       {/* Card Back (Default) */}
-      <div className="card-back absolute w-full h-full bg-gray-300 rounded-lg shadow-md flex items-center justify-center backface-hidden">
-        <span className="text-xl font-bold text-gray-700">?</span>
+      <div className="card-back absolute w-full h-full border border-accent bg-background rounded-lg shadow-md flex items-center justify-center backface-hidden">
+        <span className="text-xl font-bold text-text">?</span>
       </div>
     </div>
   );
