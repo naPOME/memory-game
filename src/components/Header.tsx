@@ -13,9 +13,12 @@ const Header = ({ score, moves }: { score: number; moves: number }) => {
 
   return (
     <header
-      className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto border-2 border-accent-100 rounded-3xl`}
+      className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto border-b border-accent-100 rounded-3xl`}
     >
-      <h1 className="text-xl ">Memory Game</h1>
+      <div className="flex items-center space-x-3">
+        <span className="text-3xl">🧠</span> {/* Brain icon for a memory game */}
+        <h1 className="text-2xl font-bold text-primary">MindMatch</h1> {/* Creative game name */}
+      </div>
 
       <div className="flex items-center space-x-4 font-thin text-xs">
         <div className="text-center">

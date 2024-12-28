@@ -92,7 +92,7 @@ const Game = () => {
             } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
           >
             <div className="card-inner w-full h-full relative">
-              <div className="card-front absolute w-full h-full bg-background border border-accent rounded-lg flex items-center justify-center backface-hidden">
+              <div className="card-front absolute w-full h-full bg-background border border-b-2 border-accent rounded-lg flex items-center justify-center backface-hidden">
                 <span className="text-xl font-bold text-primary">?</span>
               </div>
               <div className="card-back absolute w-full h-full bg-white rounded-lg flex items-center justify-center backface-hidden transform rotate-y-180">
