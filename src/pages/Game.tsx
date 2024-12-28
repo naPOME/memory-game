@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext';
+// Import the context
 import { VictoryScreen } from '../components/VictoryScreen';
-
+import imageData from '../Data/ImageData.json'; // Import the JSON data
+import { useImageCategory } from '../Context/ImageCategory';
 interface Card {
   id: number;
   image: string;
@@ -9,28 +11,44 @@ interface Card {
 }
 
 const Game = () => {
-  const [cards, setCards] = useState<Card[]>([
-    { id: 1, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
-    { id: 2, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
-    { id: 3, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
-    { id: 4, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
-    
-  ]);
+  const [cards, setCards] = useState<Card[]>([]);
   const [firstCard, setFirstCard] = useState<Card | null>(null);
   const [secondCard, setSecondCard] = useState<Card | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const { font } = useTheme();
+  const { imageCategory, resetGame } = useImageCategory(); // Consume the context
 
-  // Check if all cards are matched
+  // Generate cards based on the selected category
   useEffect(() => {
-    if (cards.every((card) => card.matched)) {
+    const images = imageData[imageCategory as keyof typeof imageData]; // Get images for the selected category
+    const cardPairs = [...images, ...images].map((image, index) => ({
+      id: index,
+      image,
+      matched: false,
+    }));
+    const shuffledCards = shuffleArray(cardPairs); 
+    setCards(shuffledCards);
+  }, [imageCategory]);
+
+  
+  const shuffleArray = (array: Card[]): Card[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  
+  useEffect(() => {
+    if (cards.length > 0 && cards.every((card) => card.matched)) {
       setShowVictoryScreen(true);
     }
   }, [cards]);
 
-  // Handle card click
+  
   const handleCardClick = (card: Card) => {
     if (disabled || card.matched || card === firstCard) return;
 
@@ -41,15 +59,15 @@ const Game = () => {
       setDisabled(true);
 
       if (firstCard.image === card.image) {
-        // Cards match
+
         setCards((prevCards) =>
           prevCards.map((c) =>
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
-        // Add matched cards to the list for animation
+        
         setMatchedCards([firstCard.id, card.id]);
-        // Reset matched cards after animation
+        
         setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
       } else {
@@ -59,21 +77,23 @@ const Game = () => {
     }
   };
 
-  // Reset turn
+  
   const resetTurn = () => {
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
   };
 
-  // Restart game
+  
   const handleRestart = () => {
-    setCards([
-      { id: 1, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
-      { id: 2, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
-      { id: 3, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
-      { id: 4, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
-    ]);
+    const images = imageData[imageCategory as keyof typeof imageData]; 
+    const cardPairs = [...images, ...images].map((image, index) => ({
+      id: index,
+      image,
+      matched: false,
+    }));
+    const shuffledCards = shuffleArray(cardPairs); // Shuffle the cards
+    setCards(shuffledCards);
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);

@@ -1,0 +1,36 @@
+
+{
+    "Animals": [
+      "https://via.placeholder.com/200x300.png?text=Animal+1",
+      "https://via.placeholder.com/200x300.png?text=Animal+2",
+      "https://via.placeholder.com/200x300.png?text=Animal+3",
+      "https://via.placeholder.com/200x300.png?text=Animal+4"
+    ],
+    "Nature": [
+      "https://via.placeholder.com/200x300.png?text=Nature+1",
+      "https://via.placeholder.com/200x300.png?text=Nature+2",
+      "https://via.placeholder.com/200x300.png?text=Nature+3",
+      "https://via.placeholder.com/200x300.png?text=Nature+4"
+    ],
+    "People": [
+      "https://via.placeholder.com/200x300.png?text=People+1",
+      "https://via.placeholder.com/200x300.png?text=People+2",
+      "https://via.placeholder.com/200x300.png?text=People+3",
+      "https://via.placeholder.com/200x300.png?text=People+4"
+    ],
+    "Cars": [
+      "https://via.placeholder.com/200x300.png?text=Car+1",
+      "https://via.placeholder.com/200x300.png?text=Car+2",
+      "https://via.placeholder.com/200x300.png?text=Car+3",
+      "https://via.placeholder.com/200x300.png?text=Car+4"
+    ],
+    "Other": [
+      "https://via.placeholder.com/200x300.png?text=Other+1",
+      "https://via.placeholder.com/200x300.png?text=Other+2",
+      "https://via.placeholder.com/200x300.png?text=Other+3",
+      "https://via.placeholder.com/200x300.png?text=Other+4"
+    ]
+  }
+  
+
+  

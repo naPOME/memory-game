@@ -18,9 +18,7 @@ const ImageCategorySelector = ({ onSelectCategory }) => {
         {imageCategories.map((category) => (
           <button
             key={category.name}
-            onClick={() => {
-              onSelectCategory(category.name); // Close the modal after selection
-            }}
+            onClick={() => onSelectCategory(category.name)}
             className="flex flex-col items-center justify-center px-6 py-4 rounded-lg transition-all transform hover:scale-105 hover:shadow-lg"
             style={{
               backgroundColor: theme.primary,

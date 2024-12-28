@@ -7,10 +7,12 @@ import Header from './components/Header';
 import Game from './pages/Game';
 import { LevelSelector } from './components/GameComponent/Level-Selection';
 import { GameProvider } from './Context/GameContext';
+import { ImageCategoryProvider } from './Context/ImageCategory';
 
 function App() {
   return (
   <GameProvider>
+    <ImageCategoryProvider>
 <div className='bg-background'>
         {/* <ThemeSelector/> */}
         <Header score={1} moves={2}/>
@@ -24,6 +26,7 @@ function App() {
         </Routes>
       </Router>
       </div>
+      </ImageCategoryProvider>
       </GameProvider>
   );
 }
