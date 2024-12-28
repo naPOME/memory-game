@@ -1,21 +1,18 @@
 // ImageCategoryContext.tsx
 import React, { createContext, useState, useContext } from 'react';
 
-// Define the context type
 interface ImageCategoryContextType {
   imageCategory: string;
-  setImageCategory: (category: string) => void; // Correct type
-  resetGame: (newCategory: string) => void; // Correct type
+  setImageCategory: (category: string) => void;
+  resetGame: (newCategory: string) => void;
 }
 
-// Create the context with default values
 const ImageCategoryContext = createContext<ImageCategoryContextType>({
   imageCategory: 'Nature', // Default category
   setImageCategory: () => {}, // Placeholder function
   resetGame: () => {}, // Placeholder function
 });
 
-// Create the provider component
 export const ImageCategoryProvider = ({ children }: { children: React.ReactNode }) => {
   const [imageCategory, setImageCategory] = useState('Nature');
 
@@ -32,7 +29,6 @@ export const ImageCategoryProvider = ({ children }: { children: React.ReactNode 
   );
 };
 
-// Create a custom hook to consume the context
 export const useImageCategory = () => {
   const context = useContext(ImageCategoryContext);
   if (!context) {

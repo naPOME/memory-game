@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { VictoryScreen } from '../components/VictoryScreen';
 import imageData from '../Data/ImageData.json';
-import { useImageCategory } from '../Context/ImageCategory';
+import { useImageCategory } from '../Context/ImageCategory'; // Import the context
 import { useGame } from '../Context/GameContext';
 
 interface Card {
@@ -22,8 +22,9 @@ const Game = () => {
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const { font } = useTheme();
-  const { imageCategory, resetGame: resetImageCategory } = useImageCategory();
+  const { imageCategory, setImageCategory, resetGame: resetImageCategory } = useImageCategory(); // Consume the context
   const { score, moves, incrementScore, incrementMoves, resetGame } = useGame();
+  const prevImageCategory = useRef(imageCategory); // Track the previous image category
 
   // Determine the number of cards based on the selected level
   const getCardCount = () => {
@@ -41,6 +42,17 @@ const Game = () => {
 
   // Generate cards based on the selected category and level
   useEffect(() => {
+    if (prevImageCategory.current !== imageCategory) {
+      const confirmChange = window.confirm(
+        'Changing the image category will restart the game. Do you want to continue?'
+      );
+      if (!confirmChange) {
+        // If the user cancels, revert to the previous category
+        setImageCategory(prevImageCategory.current);
+        return;
+      }
+    }
+
     const images = imageData[imageCategory as keyof typeof imageData];
     const cardCount = getCardCount();
     const selectedImages = images.slice(0, cardCount / 2); // Select half the required images
@@ -51,6 +63,13 @@ const Game = () => {
     }));
     const shuffledCards = shuffleArray(cardPairs);
     setCards(shuffledCards);
+    setFirstCard(null);
+    setSecondCard(null);
+    setDisabled(false);
+    setShowVictoryScreen(false);
+    resetGame(); // Reset the game state (score and moves)
+
+    prevImageCategory.current = imageCategory; // Update the previous category
   }, [imageCategory, selectedLevel]);
 
   // Shuffle array function

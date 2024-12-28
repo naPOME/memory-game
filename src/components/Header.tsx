@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import ThemeSelector from './ThemeSelector';
 import { FontSelector } from './FontSelector';
 import { useTheme } from '../Context/ThemeContext';
-import { useGame } from '../Context/GameContext'; // Import the GameContext
+import { useGame } from '../Context/GameContext';
+import { useImageCategory } from '../Context/ImageCategory'; // Import the ImageCategoryContext
 import ImageCategorySelector from './CategorySelector';
 
 const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false); // State for category modal
-  const { font } = useTheme(); // Access the font from the theme context
-  const { score, moves } = useGame(); // Consume score and moves from GameContext
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const { font } = useTheme();
+  const { score, moves } = useGame();
+  const { setImageCategory } = useImageCategory(); // Use the ImageCategoryContext
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -19,23 +21,28 @@ const Header = () => {
     setIsCategoryModalOpen(!isCategoryModalOpen);
   };
 
+  const handleCategorySelect = (category: string) => {
+    setImageCategory(category); // Update the category in the context
+    toggleCategoryModal(); // Close the modal
+  };
+
   return (
     <header
       className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto border-b border-accent-100 rounded-3xl`}
     >
       <div className="flex items-center space-x-3">
-        <span className="text-3xl">🧠</span> {/* Brain icon for a memory game */}
-        <h1 className="text-2xl font-bold text-primary">MindMatch</h1> {/* Creative game name */}
+        <span className="text-3xl">🧠</span>
+        <h1 className="text-2xl font-bold text-primary">MindMatch</h1>
       </div>
 
       <div className="flex items-center space-x-4 font-thin text-xs">
         <div className="text-center">
           <p className="">Score</p>
-          <p className="text-text">{score}</p> {/* Display score from GameContext */}
+          <p className="text-text">{score}</p>
         </div>
         <div className="text-center">
           <p className="text-secondary">Moves</p>
-          <p className="text-text">{moves}</p> {/* Display moves from GameContext */}
+          <p className="text-text">{moves}</p>
         </div>
       </div>
 
@@ -46,7 +53,7 @@ const Header = () => {
           className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
           aria-label="Category"
         >
-          <span className="text-xl">🖼️</span> {/* Category icon */}
+          <span className="text-xl">🖼️</span>
         </button>
 
         {/* Settings Icon */}
@@ -56,7 +63,7 @@ const Header = () => {
             className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
             aria-label="Settings"
           >
-            <span className="text-xl">⚙️</span> {/* Settings icon */}
+            <span className="text-xl">⚙️</span>
           </button>
 
           {/* Settings Dropdown */}
@@ -74,14 +81,14 @@ const Header = () => {
       {isCategoryModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={toggleCategoryModal} // Close modal when clicking outside
+          onClick={toggleCategoryModal}
         >
           <div
             className={`bg-background text-text rounded-lg shadow-lg p-6 w-96 max-w-full font-${font}`}
-            onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+            onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-2xl font-bold mb-4 text-center">Select a Category</h2>
-            <ImageCategorySelector onSelectCategory={toggleCategoryModal} />
+            <ImageCategorySelector onSelectCategory={handleCategorySelect} />
           </div>
         </div>
       )}
