@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext';
+import { VictoryScreen } from '../components/VictoryScreen';
 
 interface Card {
   id: number;
@@ -17,9 +18,18 @@ const Game = () => {
   const [firstCard, setFirstCard] = useState<Card | null>(null);
   const [secondCard, setSecondCard] = useState<Card | null>(null);
   const [disabled, setDisabled] = useState(false);
-  const [matchedCards, setMatchedCards] = useState<number[]>([]); 
-const {font} = useTheme()
-  
+  const [matchedCards, setMatchedCards] = useState<number[]>([]);
+  const [showVictoryScreen, setShowVictoryScreen] = useState(false);
+  const { font } = useTheme();
+
+  // Check if all cards are matched
+  useEffect(() => {
+    if (cards.every((card) => card.matched)) {
+      setShowVictoryScreen(true);
+    }
+  }, [cards]);
+
+  // Handle card click
   const handleCardClick = (card: Card) => {
     if (disabled || card.matched || card === firstCard) return;
 
@@ -30,15 +40,15 @@ const {font} = useTheme()
       setDisabled(true);
 
       if (firstCard.image === card.image) {
-        
+        // Cards match
         setCards((prevCards) =>
           prevCards.map((c) =>
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
-        
+        // Add matched cards to the list for animation
         setMatchedCards([firstCard.id, card.id]);
-        
+        // Reset matched cards after animation
         setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
       } else {
@@ -48,16 +58,30 @@ const {font} = useTheme()
     }
   };
 
-  
+  // Reset turn
   const resetTurn = () => {
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
   };
 
+  // Restart game
+  const handleRestart = () => {
+    setCards([
+      { id: 1, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
+      { id: 2, image: 'https://via.placeholder.com/200x300.png?text=Image+1', matched: false },
+      { id: 3, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
+      { id: 4, image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg', matched: false },
+    ]);
+    setFirstCard(null);
+    setSecondCard(null);
+    setDisabled(false);
+    setShowVictoryScreen(false);
+  };
+
   return (
     <div className={`flex flex-col items-center min-h-screen font-${font} bg-background p-4`}>
-      <h1 className="text-4xl font-bold text-background mb-6">Memory Game </h1>
+      <h1 className="text-4xl font-bold text-primary mb-6">Memory Game</h1>
       <div className="grid gap-4 grid-cols-2">
         {cards.map((card, index) => (
           <div
@@ -82,6 +106,9 @@ const {font} = useTheme()
           </div>
         ))}
       </div>
+
+      {/* Show Victory Screen when all cards are matched */}
+      {showVictoryScreen && <VictoryScreen onRestart={handleRestart} />}
     </div>
   );
 };

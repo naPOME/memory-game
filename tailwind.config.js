@@ -23,41 +23,43 @@ module.exports = {
   },
   plugins: [
     createThemes({
-      theme1: {
-        primary: '#4CAF50',
-        secondary: '#8BC34A',
-        accent: '#FFC107',
-        background: '#E8F5E9',  
-        text: '#1B5E20',         
+      theme1: { // Iceberg Light
+        primary: '#2D539E', // Main Color (Blue)
+    secondary: '#262A3F', // Caret Color (Dark Blue)
+    accent: '#ADB1C4', // Sub Color (Light Gray)
+    background: '#E8E9EC', // Background Color (Light Gray)
+    text: '#33374C', // Text Color (Dark Gray)
       },
-      theme2: {
-        primary: '#3F51B5',
-        secondary: '#03A9F4',
-        accent: '#E91E63',
-        background: '#E3F2FD',  
-        text: '#1A237E',         
+      theme2: { // Graen
+        primary: '#A59682', // Main Color (Beige)
+        secondary: '#A59682', // Caret Color (Dark Red)
+        accent: '#181D1A', // Sub Color (Dark Gray)
+        background: '#303C36', // Background Color (Dark Green)
+        text: '#A59682', // Text Color (Beige)
       },
-      theme3: {
-        primary: '#FF5722',
-        secondary: '#FFC107',
-        accent: '#4CAF50',
-        background: '#FFF3E0',  
-        text: '#D32F2F',         
+      theme3: { // Gruvbox Dark
+        primary: '#689D6A', // Main Color (Green)
+    secondary: '#689D6A', // Caret Color (Green)
+    accent: '#A89984', // Sub Color (Gray)
+    background: '#FBF1C7', // Background Color (Light Beige)
+    text: '#3C3836', // Text Color (Dark Brown)
       },
-      theme4: {
-        primary: '#9C27B0',
-        secondary: '#673AB7',
-        accent: '#03A9F4',
-        background: '#F3E5F5',  
-        text: '#6A1B9A',        
+      theme4: { // Hedge
+        primary: '#6A994E', // Main Color (Green)
+    secondary: '#F2EFBB', // Caret Color (Light Yellow)
+    accent: '#EDE5B4', // Sub Color (Beige)
+    background: '#415E31', // Background Color (Dark Green)
+    text: '#F7F1D6', // Text Color (Light Beige)
+    
       },
-      theme5: {
-        primary: '#F44336',
-        secondary: '#E91E63',
-        accent: '#9C27B0',
-        background: '#FFEBEE', 
-        text: '#B71C1C',        
+      theme5: { // Honey
+        primary: '#FFF546', // Main Color (Bright Yellow)
+        secondary: '#795200', // Caret Color (Dark Brown)
+        accent: '#A66B00', // Sub Color (Brown)
+        background: '#F2AA00', // Background Color (Golden Yellow)
+        text: '#F3EECB', // Text Color (Light Beige)
       },
+      
     }),
   ],
 };
