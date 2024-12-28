@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import ThemeSelector from './ThemeSelector';
 import { FontSelector } from './FontSelector';
 import { useTheme } from '../Context/ThemeContext';
+import { useGame } from '../Context/GameContext'; // Import the GameContext
 import ImageCategorySelector from './CategorySelector';
 
-const Header = ({ score, moves }: { score: number; moves: number }) => {
+const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false); // State for category modal
   const { font } = useTheme(); // Access the font from the theme context
+  const { score, moves } = useGame(); // Consume score and moves from GameContext
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -29,11 +31,11 @@ const Header = ({ score, moves }: { score: number; moves: number }) => {
       <div className="flex items-center space-x-4 font-thin text-xs">
         <div className="text-center">
           <p className="">Score</p>
-          <p className="text-text">{score}</p>
+          <p className="text-text">{score}</p> {/* Display score from GameContext */}
         </div>
         <div className="text-center">
           <p className="text-secondary">Moves</p>
-          <p className="text-text">{moves}</p>
+          <p className="text-text">{moves}</p> {/* Display moves from GameContext */}
         </div>
       </div>
 

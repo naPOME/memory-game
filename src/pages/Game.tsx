@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
-// Import the context
 import { VictoryScreen } from '../components/VictoryScreen';
-import imageData from '../Data/ImageData.json'; // Import the JSON data
+import imageData from '../Data/ImageData.json';
 import { useImageCategory } from '../Context/ImageCategory';
+import { useGame } from '../Context/GameContext';
+
 interface Card {
   id: number;
   image: string;
@@ -11,6 +13,8 @@ interface Card {
 }
 
 const Game = () => {
+  const location = useLocation();
+  const selectedLevel = location.state?.level || 'easy'; // Default to 'easy' if no level is provided
   const [cards, setCards] = useState<Card[]>([]);
   const [firstCard, setFirstCard] = useState<Card | null>(null);
   const [secondCard, setSecondCard] = useState<Card | null>(null);
@@ -18,21 +22,38 @@ const Game = () => {
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const { font } = useTheme();
-  const { imageCategory, resetGame } = useImageCategory(); // Consume the context
+  const { imageCategory, resetGame: resetImageCategory } = useImageCategory();
+  const { score, moves, incrementScore, incrementMoves, resetGame } = useGame();
 
-  // Generate cards based on the selected category
+  // Determine the number of cards based on the selected level
+  const getCardCount = () => {
+    switch (selectedLevel) {
+      case 'easy':
+        return 12;
+      case 'medium':
+        return 24;
+      case 'hard':
+        return 36;
+      default:
+        return 12; // Default to easy
+    }
+  };
+
+  // Generate cards based on the selected category and level
   useEffect(() => {
-    const images = imageData[imageCategory as keyof typeof imageData]; // Get images for the selected category
-    const cardPairs = [...images, ...images].map((image, index) => ({
+    const images = imageData[imageCategory as keyof typeof imageData];
+    const cardCount = getCardCount();
+    const selectedImages = images.slice(0, cardCount / 2); // Select half the required images
+    const cardPairs = [...selectedImages, ...selectedImages].map((image, index) => ({
       id: index,
       image,
       matched: false,
     }));
-    const shuffledCards = shuffleArray(cardPairs); 
+    const shuffledCards = shuffleArray(cardPairs);
     setCards(shuffledCards);
-  }, [imageCategory]);
+  }, [imageCategory, selectedLevel]);
 
-  
+  // Shuffle array function
   const shuffleArray = (array: Card[]): Card[] => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -41,14 +62,14 @@ const Game = () => {
     return array;
   };
 
-  
+  // Check if all cards are matched
   useEffect(() => {
     if (cards.length > 0 && cards.every((card) => card.matched)) {
       setShowVictoryScreen(true);
     }
   }, [cards]);
 
-  
+  // Handle card click
   const handleCardClick = (card: Card) => {
     if (disabled || card.matched || card === firstCard) return;
 
@@ -57,58 +78,61 @@ const Game = () => {
     } else {
       setSecondCard(card);
       setDisabled(true);
+      incrementMoves();
 
       if (firstCard.image === card.image) {
-
         setCards((prevCards) =>
           prevCards.map((c) =>
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
-        
+        incrementScore();
         setMatchedCards([firstCard.id, card.id]);
-        
         setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
       } else {
-        // No match
         setTimeout(() => resetTurn(), 1000);
       }
     }
   };
 
-  
+  // Reset turn
   const resetTurn = () => {
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
   };
 
-  
+  // Restart game
   const handleRestart = () => {
-    const images = imageData[imageCategory as keyof typeof imageData]; 
-    const cardPairs = [...images, ...images].map((image, index) => ({
+    const images = imageData[imageCategory as keyof typeof imageData];
+    const cardCount = getCardCount();
+    const selectedImages = images.slice(0, cardCount / 2); // Select half the required images
+    const cardPairs = [...selectedImages, ...selectedImages].map((image, index) => ({
       id: index,
       image,
       matched: false,
     }));
-    const shuffledCards = shuffleArray(cardPairs); // Shuffle the cards
+    const shuffledCards = shuffleArray(cardPairs);
     setCards(shuffledCards);
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
     setShowVictoryScreen(false);
+    resetGame();
+    resetImageCategory(imageCategory);
   };
 
   return (
     <div className={`flex flex-col items-center min-h-screen font-${font} bg-background p-4`}>
       <h1 className="text-4xl font-bold text-primary mb-6">Memory Game</h1>
-      <div className="grid gap-4 grid-cols-2">
+      <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
+      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {cards.map((card, index) => (
           <div
             key={index}
             onClick={() => handleCardClick(card)}
-            className={`card w-32 h-20 cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+            className={`card w-32 h-16 cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
               card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
             } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
           >
@@ -128,7 +152,6 @@ const Game = () => {
         ))}
       </div>
 
-      {/* Show Victory Screen when all cards are matched */}
       {showVictoryScreen && <VictoryScreen onRestart={handleRestart} />}
     </div>
   );
