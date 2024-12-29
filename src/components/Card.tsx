@@ -15,7 +15,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ card, isFlipped, isPulsing, onClick }) => {
   return (
     <div
-      className={`card w-32 h-16 cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+      className={`card w-32 h-16 cursor-pointer z-10 rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
         isFlipped ? 'flipped' : ''
       } ${isPulsing ? 'animate-pulse' : ''}`}
       onClick={onClick}

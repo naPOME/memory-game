@@ -5,7 +5,7 @@ import { VictoryScreen } from '../components/VictoryScreen';
 import imageData from '../Data/ImageData.json';
 import { useImageCategory } from '../Context/ImageCategory'; 
 import { useGame } from '../Context/GameContext';
-import { ConfirmationModal } from '../components/ConfirmationModal'; // Import the modal
+import { ConfirmationModal } from '../components/ConfirmationModal'; 
 
 interface Card {
   id: number;
@@ -160,7 +160,7 @@ const Game = () => {
   };
 
   return (
-    <div className={`flex flex-col items-center  min-h-screen font-${font} bg-background p-4 `}>
+    <div className={`flex flex-col items-center  min-h-screen font-${font} bg-background p-4 z-10`}>
       {/* <h1 className="text-4xl font-bold text-primary mb-6">Memory Game</h1> */}
       <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
       <div className={`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 z-0 ${getCardAlignment()}`}>
@@ -168,7 +168,7 @@ const Game = () => {
           <div
             key={index}
             onClick={() => handleCardClick(card)}
-            className={`card ${getCardWidth()}  cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+            className={`card ${getCardWidth()}  cursor-pointer rounded-lg shadow-md transition-transform z-10 transform-style-preserve-3d ${
               card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
             } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
           >

@@ -3,16 +3,16 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 interface GameContextType {
   score: number;
   moves: number;
-  elapsedTime: number; // Elapsed time in seconds
-  isTimerRunning: boolean; // Whether the timer is running
+  elapsedTime: number; 
+  isTimerRunning: boolean; 
   setScore: (score: number) => void;
   setMoves: (moves: number) => void;
   incrementScore: () => void;
   incrementMoves: () => void;
   resetGame: () => void;
-  startTimer: () => void; // Start the timer
-  stopTimer: () => void; // Stop the timer
-  resetTimer: () => void; // Reset the timer
+  startTimer: () => void; 
+  stopTimer: () => void; 
+  resetTimer: () => void; 
 }
 
 const GameContext = createContext<GameContextType>({
@@ -33,8 +33,8 @@ const GameContext = createContext<GameContextType>({
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState(0); // Timer state
-  const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer control
+  const [elapsedTime, setElapsedTime] = useState(0); 
+  const [isTimerRunning, setIsTimerRunning] = useState(false); 
 
   
   useEffect(() => {
@@ -44,7 +44,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         setElapsedTime((prevTime) => prevTime + 1);
       }, 1000);
     }
-    return () => clearInterval(interval); // Cleanup interval on unmount
+    return () => clearInterval(interval); 
   }, [isTimerRunning]);
 
   const incrementScore = () => {
@@ -58,7 +58,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const resetGame = () => {
     setScore(0);
     setMoves(0);
-    resetTimer(); // Reset the timer when the game is reset
+    resetTimer(); 
   };
 
   const startTimer = () => {

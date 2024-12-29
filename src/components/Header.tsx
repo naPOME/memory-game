@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
 
           {/* Settings Dropdown */}
           {isSettingsOpen && (
-            <div className="absolute right-0 mt-2 w-44 bg-secondary text-background shadow-lg rounded-lg p-4">
+            <div className="absolute right-0 mt-2 w-44 bg-secondary text-background shadow-lg rounded-lg p-4 z-50">
               <h3 className="font-bold mb-2">Settings</h3>
               <ThemeSelector />
               <FontSelector />
@@ -90,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
       {/* Category Modal */}
       {isCategoryModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-100"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 "
           onClick={toggleCategoryModal}
         >
           <div
