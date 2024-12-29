@@ -5,12 +5,11 @@ import { useTheme } from '../Context/ThemeContext';
 import { useGame } from '../Context/GameContext';
 import { useImageCategory } from '../Context/ImageCategory';
 import ImageCategorySelector from './CategorySelector';
-import { formatTime } from '../utill/FormatTime';
-
+import { formatTime } from '../utill/FormatTime'; 
 
 interface HeaderProps {
-  elapsedTime: number; // Elapsed time in seconds
-  isTimerRunning: boolean; // Whether the timer is running
+  elapsedTime: number; 
+  isTimerRunning: boolean; 
 }
 
 const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
@@ -29,17 +28,17 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   };
 
   const handleCategorySelect = (category: string) => {
-    setImageCategory(category); // Update the category in the context
-    toggleCategoryModal(); // Close the modal
+    setImageCategory(category); 
+    toggleCategoryModal(); 
   };
 
   return (
     <header
-      className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto border-b border-accent-100 rounded-3xl`}
+      className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto rounded-md`}
     >
       <div className="flex items-center space-x-3">
         <span className="text-3xl">🧠</span>
-        <h1 className="text-2xl font-bold text-primary">MindMatch</h1>
+        <h1 className="text-2xl font-bold text-text">MindMatch</h1>
       </div>
 
       <div className="flex items-center space-x-4 font-thin text-xs">
@@ -53,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
         <div className="text-center">
           <p className="text-secondary">Time</p>
-          <p className="text-text">{formatTime(elapsedTime)}</p> {/* Display the formatted time */}
+          <p className="text-text">{formatTime(elapsedTime)}</p> 
         </div>
       </div>
 
@@ -91,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
       {/* Category Modal */}
       {isCategoryModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-100"
           onClick={toggleCategoryModal}
         >
           <div

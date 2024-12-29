@@ -1,22 +1,20 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-// Define the context type
 interface GameContextType {
   score: number;
   moves: number;
-  elapsedTime: number; // Add elapsedTime
-  isTimerRunning: boolean; // Add isTimerRunning
+  elapsedTime: number; // Elapsed time in seconds
+  isTimerRunning: boolean; // Whether the timer is running
   setScore: (score: number) => void;
   setMoves: (moves: number) => void;
   incrementScore: () => void;
   incrementMoves: () => void;
   resetGame: () => void;
-  startTimer: () => void; // Add startTimer
-  stopTimer: () => void; // Add stopTimer
-  resetTimer: () => void; // Add resetTimer
+  startTimer: () => void; // Start the timer
+  stopTimer: () => void; // Stop the timer
+  resetTimer: () => void; // Reset the timer
 }
 
-// Create the context with default values
 const GameContext = createContext<GameContextType>({
   score: 0,
   moves: 0,
@@ -32,14 +30,13 @@ const GameContext = createContext<GameContextType>({
   resetTimer: () => {},
 });
 
-// Create the provider component
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0); // Timer state
   const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer control
 
-  // Increment the timer every second
+  
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isTimerRunning) {
@@ -99,7 +96,6 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Create a custom hook to consume the context
 export const useGame = () => {
   const context = useContext(GameContext);
   if (!context) {
