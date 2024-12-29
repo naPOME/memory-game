@@ -1,4 +1,3 @@
-// src/components/Card/Card.tsx
 import React from 'react';
 
 interface CardProps {
@@ -8,17 +7,18 @@ interface CardProps {
     matched: boolean;
   };
   isFlipped: boolean;
-  isPulsing: boolean;
+  isMatched: boolean;
   onClick: () => void;
+  className: string;
 }
 
-const Card: React.FC<CardProps> = ({ card, isFlipped, isPulsing, onClick }) => {
+const Card: React.FC<CardProps> = ({ card, isFlipped, isMatched, onClick, className }) => {
   return (
     <div
-      className={`card w-32 h-16 cursor-pointer z-10 rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
-        isFlipped ? 'flipped' : ''
-      } ${isPulsing ? 'animate-pulse' : ''}`}
       onClick={onClick}
+      className={`card ${className} cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+        isFlipped || isMatched ? 'flipped' : ''
+      } ${isMatched ? 'animate-pulse' : ''}`}
     >
       <div className="card-inner w-full h-full relative">
         <div className="card-front absolute w-full h-full bg-background border border-b-2 border-accent rounded-lg flex items-center justify-center backface-hidden">

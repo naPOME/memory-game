@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ThemeSelector from './ThemeSelector';
 import { FontSelector } from './FontSelector';
 import { useTheme } from '../Context/ThemeContext';
 import { useGame } from '../Context/GameContext';
 import { useImageCategory } from '../Context/ImageCategory';
 import ImageCategorySelector from './CategorySelector';
-import { formatTime } from '../utill/FormatTime'; 
+import { formatTime } from '../utill/FormatTime';
 
 interface HeaderProps {
-  elapsedTime: number; 
-  isTimerRunning: boolean; 
+  elapsedTime: number;
+  isTimerRunning: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
@@ -18,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   const { font } = useTheme();
   const { score, moves } = useGame();
   const { setImageCategory } = useImageCategory();
+  const settingsRef = useRef<HTMLDivElement>(null);
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -28,14 +29,25 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   };
 
   const handleCategorySelect = (category: string) => {
-    setImageCategory(category); 
-    toggleCategoryModal(); 
+    setImageCategory(category);
+    toggleCategoryModal();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setIsSettingsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <header
-      className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto rounded-md`}
-    >
+    <header className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto rounded-md`}>
       <div className="flex items-center space-x-3">
         <span className="text-3xl">🧠</span>
         <h1 className="text-2xl font-bold text-text">MindMatch</h1>
@@ -52,12 +64,11 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
         <div className="text-center">
           <p className="text-secondary">Time</p>
-          <p className="text-text">{formatTime(elapsedTime)}</p> 
+          <p className="text-text">{formatTime(elapsedTime)}</p>
         </div>
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Category Icon */}
         <button
           onClick={toggleCategoryModal}
           className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
@@ -66,8 +77,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
           <span className="text-xl">🖼️</span>
         </button>
 
-        {/* Settings Icon */}
-        <div className="relative">
+        <div className="relative" ref={settingsRef}>
           <button
             onClick={toggleSettings}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
@@ -76,7 +86,6 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
             <span className="text-xl">⚙️</span>
           </button>
 
-          {/* Settings Dropdown */}
           {isSettingsOpen && (
             <div className="absolute right-0 mt-2 w-44 bg-secondary text-background shadow-lg rounded-lg p-4 z-50">
               <h3 className="font-bold mb-2">Settings</h3>
@@ -87,10 +96,9 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
       </div>
 
-      {/* Category Modal */}
       {isCategoryModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 "
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={toggleCategoryModal}
         >
           <div

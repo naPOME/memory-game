@@ -6,8 +6,9 @@ import imageData from '../Data/ImageData.json';
 import { useImageCategory } from '../Context/ImageCategory'; 
 import { useGame } from '../Context/GameContext';
 import { ConfirmationModal } from '../components/ConfirmationModal'; 
+import Card from '../components/Card';
 
-interface Card {
+interface CardType {
   id: number;
   image: string;
   matched: boolean;
@@ -16,13 +17,13 @@ interface Card {
 const Game = () => {
   const location = useLocation();
   const selectedLevel = location.state?.level || 'easy'; 
-  const [cards, setCards] = useState<Card[]>([]);
-  const [firstCard, setFirstCard] = useState<Card | null>(null);
-  const [secondCard, setSecondCard] = useState<Card | null>(null);
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [firstCard, setFirstCard] = useState<CardType | null>(null);
+  const [secondCard, setSecondCard] = useState<CardType | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false); // State for modal visibility
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const { font } = useTheme();
   const { imageCategory, setImageCategory } = useImageCategory(); 
   const { score, moves, incrementScore, incrementMoves, resetGame, startTimer, stopTimer, isTimerRunning } = useGame();
@@ -41,7 +42,6 @@ const Game = () => {
     }
   };
 
-  
   const getCardWidth = () => {
     switch (selectedLevel) {
       case 'easy':
@@ -49,14 +49,14 @@ const Game = () => {
       case 'medium':
         return 'w-44 h-28'; 
       case 'hard':
-        return 'w-36 h-28 lg:grid-cols-9'; 
+        return 'w-36 h-28'; 
       default:
-        return 'w-44 h-44 '; 
+        return 'w-44 h-44'; 
     }
   };
+
   const getCardAlignment = () => {
     switch (selectedLevel) {
-      
       case 'hard':
         return 'lg:grid-cols-9'; 
       default:
@@ -64,11 +64,9 @@ const Game = () => {
     }
   };
 
- 
   useEffect(() => {
     initializeGame();
   }, []);
-
 
   useEffect(() => {
     if (prevImageCategory.current !== imageCategory) {
@@ -105,7 +103,7 @@ const Game = () => {
     setShowConfirmationModal(false); 
   };
 
-  const shuffleArray = (array: Card[]): Card[] => {
+  const shuffleArray = (array: CardType[]): CardType[] => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -120,7 +118,7 @@ const Game = () => {
     }
   }, [cards]);
 
-  const handleCardClick = (card: Card) => {
+  const handleCardClick = (card: CardType) => {
     if (disabled || card.matched || card === firstCard) return;
 
     if (!firstCard) {
@@ -160,35 +158,21 @@ const Game = () => {
   };
 
   return (
-    <div className={`flex flex-col items-center  min-h-screen font-${font} bg-background p-4 z-10`}>
-      {/* <h1 className="text-4xl font-bold text-primary mb-6">Memory Game</h1> */}
+    <div className={`flex flex-col items-center min-h-screen font-${font} bg-background p-4 z-10`}>
       <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
       <div className={`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 z-0 ${getCardAlignment()}`}>
-        {cards.map((card, index) => (
-          <div
-            key={index}
+        {cards.map((card) => (
+          <Card
+            key={card.id}
+            card={card}
+            isFlipped={card === firstCard || card === secondCard}
+            isMatched={card.matched}
             onClick={() => handleCardClick(card)}
-            className={`card ${getCardWidth()}  cursor-pointer rounded-lg shadow-md transition-transform z-10 transform-style-preserve-3d ${
-              card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
-            } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
-          >
-            <div className="card-inner w-full h-full relative">
-              <div className="card-front absolute w-full h-full bg-background border border-b-2 border-accent rounded-lg flex items-center justify-center backface-hidden">
-                <span className="text-xl font-bold text-primary">?</span>
-              </div>
-              <div className="card-back absolute w-full h-full bg-white rounded-lg flex items-center justify-center backface-hidden z-0 transform rotate-y-180">
-                <img
-                  src={card.image}
-                  alt="Card"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
-            </div>
-          </div>
+            className={getCardWidth()}
+          />
         ))}
       </div>
 
-      {/* Restart Button */}
       <button
         onClick={handleRestart}
         className="mt-6 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition"
@@ -196,10 +180,8 @@ const Game = () => {
         Restart Game
       </button>
 
-      {/* Victory Screen */}
       {showVictoryScreen && <VictoryScreen onRestart={handleRestart} />}
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         isOpen={showConfirmationModal}
         onConfirm={handleConfirmCategoryChange}

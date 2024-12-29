@@ -26,7 +26,7 @@ const CardGrid = ({ cards, level, firstCard, secondCard, disabled, handleCardCli
         <div
           key={index}
           onClick={() => handleCardClick(card)}
-          className={`card w-32 h-20 cursor-pointer rounded-lg  shadow-md transition-transform transform-style-preserve-3d ${
+          className={`card w-32 h-20 cursor-pointer rounded-lg bg-primary shadow-md transition-transform transform-style-preserve-3d ${
             card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
           }`}
         >
