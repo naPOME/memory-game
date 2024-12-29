@@ -1,30 +1,94 @@
-// src/components/Game/Game.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
-import  VictoryScreen  from '../components/VictoryScreen';
-import useGameLogic from '../hooks/useGameLogic';
-import Card from '../components/Card';
-import CategoryModal from '../components/CategoryModel.tsx/CategoryModel';
+import { VictoryScreen } from '../components/VictoryScreen';
+import imageData from '../Data/ImageData.json';
+import { useImageCategory } from '../Context/ImageCategory'; 
+import { useGame } from '../Context/GameContext';
+
+interface Card {
+  id: number;
+  image: string;
+  matched: boolean;
+}
 
 const Game = () => {
   const location = useLocation();
-  const selectedLevel = location.state?.level || 'easy';
+  const selectedLevel = location.state?.level || 'easy'; 
+  const [cards, setCards] = useState<Card[]>([]);
+  const [firstCard, setFirstCard] = useState<Card | null>(null);
+  const [secondCard, setSecondCard] = useState<Card | null>(null);
+  const [disabled, setDisabled] = useState(false);
+  const [matchedCards, setMatchedCards] = useState<number[]>([]);
+  const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const { font } = useTheme();
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const {
-    cards,
-    firstCard,
-    secondCard,
-    disabled,
-    matchedCards,
-    generateCards,
-    setFirstCard,
-    setSecondCard,
-    setDisabled,
-    setMatchedCards,
-  } = useGameLogic(selectedLevel);
+  const { imageCategory, setImageCategory, resetGame: resetImageCategory } = useImageCategory(); 
+  const { score, moves, incrementScore, incrementMoves, resetGame } = useGame();
+  const prevImageCategory = useRef(imageCategory); 
 
+  
+  const getCardCount = () => {
+    switch (selectedLevel) {
+      case 'easy':
+        return 12;
+      case 'medium':
+        return 24;
+      case 'hard':
+        return 36;
+      default:
+        return 12; 
+    }
+  };
+
+  
+  useEffect(() => {
+    if (prevImageCategory.current !== imageCategory) {
+      const confirmChange = window.confirm(
+        'Changing the image category will restart the game. Do you want to continue?'
+      );
+      if (!confirmChange) {
+        
+        setImageCategory(prevImageCategory.current);
+        return;
+      }
+    }
+
+    const images = imageData[imageCategory as keyof typeof imageData];
+    const cardCount = getCardCount();
+    const selectedImages = images.slice(0, cardCount / 2); 
+    const cardPairs = [...selectedImages, ...selectedImages].map((image, index) => ({
+      id: index,
+      image,
+      matched: false,
+    }));
+    const shuffledCards = shuffleArray(cardPairs);
+    setCards(shuffledCards);
+    setFirstCard(null);
+    setSecondCard(null);
+    setDisabled(false);
+    setShowVictoryScreen(false);
+    resetGame(); 
+
+    prevImageCategory.current = imageCategory; 
+  }, [imageCategory, selectedLevel]);
+
+  
+  const shuffleArray = (array: Card[]): Card[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  
+  useEffect(() => {
+    if (cards.length > 0 && cards.every((card) => card.matched)) {
+      setShowVictoryScreen(true);
+    }
+  }, [cards]);
+
+  
   const handleCardClick = (card: Card) => {
     if (disabled || card.matched || card === firstCard) return;
 
@@ -33,11 +97,15 @@ const Game = () => {
     } else {
       setSecondCard(card);
       setDisabled(true);
+      incrementMoves();
 
       if (firstCard.image === card.image) {
         setCards((prevCards) =>
-          prevCards.map((c) => (c.image === card.image ? { ...c, matched: true } : c))
+          prevCards.map((c) =>
+            c.image === card.image ? { ...c, matched: true } : c
+          )
         );
+        incrementScore();
         setMatchedCards([firstCard.id, card.id]);
         setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
@@ -47,17 +115,31 @@ const Game = () => {
     }
   };
 
+  
   const resetTurn = () => {
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
   };
 
-  const handleCategoryChange = (confirmed: boolean) => {
-    if (confirmed) {
-      generateCards();
-    }
-    setShowCategoryModal(false);
+  
+  const handleRestart = () => {
+    const images = imageData[imageCategory as keyof typeof imageData];
+    const cardCount = getCardCount();
+    const selectedImages = images.slice(0, cardCount / 2); 
+    const cardPairs = [...selectedImages, ...selectedImages].map((image, index) => ({
+      id: index,
+      image,
+      matched: false,
+    }));
+    const shuffledCards = shuffleArray(cardPairs);
+    setCards(shuffledCards);
+    setFirstCard(null);
+    setSecondCard(null);
+    setDisabled(false);
+    setShowVictoryScreen(false);
+    resetGame();
+    resetImageCategory(imageCategory);
   };
 
   return (
@@ -65,22 +147,31 @@ const Game = () => {
       <h1 className="text-4xl font-bold text-primary mb-6">Memory Game</h1>
       <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            card={card}
-            isFlipped={card === firstCard || card === secondCard || card.matched}
-            isPulsing={matchedCards.includes(card.id)}
+        {cards.map((card, index) => (
+          <div
+            key={index}
             onClick={() => handleCardClick(card)}
-          />
+            className={`card w-32 h-16 cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+              card === firstCard || card === secondCard || card.matched ? 'flipped' : ''
+            } ${matchedCards.includes(card.id) ? 'animate-pulse' : ''}`}
+          >
+            <div className="card-inner w-full h-full relative">
+              <div className="card-front absolute w-full h-full bg-background border border-b-2 border-accent rounded-lg flex items-center justify-center backface-hidden">
+                <span className="text-xl font-bold text-primary">?</span>
+              </div>
+              <div className="card-back absolute w-full h-full bg-white rounded-lg flex items-center justify-center backface-hidden transform rotate-y-180">
+                <img
+                  src={card.image}
+                  alt="Card"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
-      <CategoryModal
-        isOpen={showCategoryModal}
-        onConfirm={() => handleCategoryChange(true)}
-        onCancel={() => handleCategoryChange(false)}
-      />
+      {showVictoryScreen && <VictoryScreen onRestart={handleRestart} />}
     </div>
   );
 };
