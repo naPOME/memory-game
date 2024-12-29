@@ -6,6 +6,7 @@ import { useGame } from '../Context/GameContext';
 import { useImageCategory } from '../Context/ImageCategory';
 import ImageCategorySelector from './CategorySelector';
 import { formatTime } from '../utill/FormatTime';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   elapsedTime: number;
@@ -19,6 +20,8 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   const { score, moves } = useGame();
   const { setImageCategory } = useImageCategory();
   const settingsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation(); 
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -26,6 +29,10 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
 
   const toggleCategoryModal = () => {
     setIsCategoryModalOpen(!isCategoryModalOpen);
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
   };
 
   const handleCategorySelect = (category: string) => {
@@ -48,25 +55,28 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
 
   return (
     <header className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto rounded-md`}>
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-3 cursor-pointer" onClick={handleLogoClick}>
         <span className="text-3xl">🧠</span>
         <h1 className="text-2xl font-bold text-text">MindMatch</h1>
       </div>
 
-      <div className="flex items-center space-x-4 font-thin text-xs">
-        <div className="text-center">
-          <p className="">Score</p>
-          <p className="text-text">{score}</p>
+      
+      {location.pathname === '/game' && (
+        <div className="flex items-center space-x-4 font-thin text-xs">
+          <div className="text-center">
+            <p className="">Score</p>
+            <p className="text-text">{score}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-secondary">Moves</p>
+            <p className="text-text">{moves}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-secondary">Time</p>
+            <p className="text-text">{formatTime(elapsedTime)}</p>
+          </div>
         </div>
-        <div className="text-center">
-          <p className="text-secondary">Moves</p>
-          <p className="text-text">{moves}</p>
-        </div>
-        <div className="text-center">
-          <p className="text-secondary">Time</p>
-          <p className="text-text">{formatTime(elapsedTime)}</p>
-        </div>
-      </div>
+      )}
 
       <div className="flex items-center space-x-4">
         <button
