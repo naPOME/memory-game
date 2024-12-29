@@ -3,15 +3,22 @@ import ThemeSelector from './ThemeSelector';
 import { FontSelector } from './FontSelector';
 import { useTheme } from '../Context/ThemeContext';
 import { useGame } from '../Context/GameContext';
-import { useImageCategory } from '../Context/ImageCategory'; // Import the ImageCategoryContext
+import { useImageCategory } from '../Context/ImageCategory';
 import ImageCategorySelector from './CategorySelector';
+import { formatTime } from '../utill/FormatTime';
 
-const Header = () => {
+
+interface HeaderProps {
+  elapsedTime: number; // Elapsed time in seconds
+  isTimerRunning: boolean; // Whether the timer is running
+}
+
+const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const { font } = useTheme();
   const { score, moves } = useGame();
-  const { setImageCategory } = useImageCategory(); // Use the ImageCategoryContext
+  const { setImageCategory } = useImageCategory();
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -43,6 +50,10 @@ const Header = () => {
         <div className="text-center">
           <p className="text-secondary">Moves</p>
           <p className="text-text">{moves}</p>
+        </div>
+        <div className="text-center">
+          <p className="text-secondary">Time</p>
+          <p className="text-text">{formatTime(elapsedTime)}</p> {/* Display the formatted time */}
         </div>
       </div>
 
