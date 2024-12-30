@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { VictoryScreen } from '../components/VictoryScreen';
 import imageData from '../Data/ImageData.json';
-import { useImageCategory } from '../Context/ImageCategory'; 
+import { useImageCategory } from '../Context/ImageCategory';
 import { useGame } from '../Context/GameContext';
-import { ConfirmationModal } from '../components/ConfirmationModal'; 
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import Card from '../components/Card';
 
 interface CardType {
@@ -14,93 +14,96 @@ interface CardType {
   matched: boolean;
 }
 
+const LEVEL_CONFIG = {
+  easy: { cardCount: 12, cardWidth: 'w-44 h-44', gridCols: 'lg:grid-cols-6' },
+  medium: { cardCount: 24, cardWidth: 'w-44 h-28', gridCols: 'lg:grid-cols-6' },
+  hard: { cardCount: 36, cardWidth: 'w-36 h-28', gridCols: 'lg:grid-cols-9' },
+};
+
 const Game = () => {
   const location = useLocation();
-  const selectedLevel = location.state?.level || 'easy'; 
+  const selectedLevel = location.state?.level || 'easy';
+  const currentLevelConfig = LEVEL_CONFIG[selectedLevel] || LEVEL_CONFIG.easy;
+
   const [cards, setCards] = useState<CardType[]>([]);
-  const [firstCard, setFirstCard] = useState<CardType | null>(null);
-  const [secondCard, setSecondCard] = useState<CardType | null>(null);
+  const [selectedCards, setSelectedCards] = useState<CardType[]>([]);
   const [disabled, setDisabled] = useState(false);
-  const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const { font } = useTheme();
-  const { imageCategory, setImageCategory } = useImageCategory(); 
+  const { imageCategory, setImageCategory } = useImageCategory();
   const { score, moves, incrementScore, incrementMoves, resetGame, startTimer, stopTimer, isTimerRunning } = useGame();
-  const prevImageCategory = useRef(imageCategory); 
-
-  const getCardCount = () => {
-    switch (selectedLevel) {
-      case 'easy':
-        return 12;
-      case 'medium':
-        return 24;
-      case 'hard':
-        return 36;
-      default:
-        return 12; 
-    }
-  };
-
-  const getCardWidth = () => {
-    switch (selectedLevel) {
-      case 'easy':
-        return 'w-44 h-44'; 
-      case 'medium':
-        return 'w-44 h-28'; 
-      case 'hard':
-        return 'w-36 h-28'; 
-      default:
-        return 'w-44 h-44'; 
-    }
-  };
-
-  const getCardAlignment = () => {
-    switch (selectedLevel) {
-      case 'hard':
-        return 'lg:grid-cols-9'; 
-      default:
-        return 'lg:grid-cols-6'; 
-    }
-  };
 
   useEffect(() => {
     initializeGame();
   }, []);
 
   useEffect(() => {
-    if (prevImageCategory.current !== imageCategory) {
-      setShowConfirmationModal(true); 
+    if (cards.length && cards.every((card) => card.matched)) {
+      stopTimer();
+      setShowVictoryScreen(true);
     }
+  }, [cards, stopTimer]);
+
+  useEffect(() => {
+    setShowConfirmationModal(true);
   }, [imageCategory]);
 
   const initializeGame = () => {
-    const images = imageData[imageCategory as keyof typeof imageData];
-    const cardCount = getCardCount();
-    const selectedImages = images.slice(0, cardCount / 2); 
-    const cardPairs = [...selectedImages, ...selectedImages].map((image, index) => ({
-      id: index,
-      image,
-      matched: false,
-    }));
-    const shuffledCards = shuffleArray(cardPairs);
+    const images = imageData[imageCategory as keyof typeof imageData] || [];
+    const selectedImages = images.slice(0, currentLevelConfig.cardCount / 2);
+    const shuffledCards = shuffleArray(
+      selectedImages.flatMap((image, index) => [
+        { id: index * 2, image, matched: false },
+        { id: index * 2 + 1, image, matched: false },
+      ])
+    );
     setCards(shuffledCards);
-    setFirstCard(null);
-    setSecondCard(null);
+    setSelectedCards([]);
     setDisabled(false);
     setShowVictoryScreen(false);
-    resetGame(); 
-    prevImageCategory.current = imageCategory; 
+    resetGame();
   };
 
+  const handleCardClick = (card: CardType) => {
+    if (disabled || card.matched || selectedCards.includes(card)) return;
+
+    const updatedSelectedCards = [...selectedCards, card];
+    setSelectedCards(updatedSelectedCards);
+
+    if (updatedSelectedCards.length === 2) {
+      setDisabled(true);
+      incrementMoves();
+
+      if (updatedSelectedCards[0].image === updatedSelectedCards[1].image) {
+        setCards((prevCards) =>
+          prevCards.map((c) =>
+            c.image === card.image ? { ...c, matched: true } : c
+          )
+        );
+        incrementScore();
+        setTimeout(() => setSelectedCards([]), 500);
+      } else {
+        setTimeout(() => setSelectedCards([]), 1000);
+      }
+
+      setDisabled(false);
+    } else if (!isTimerRunning) {
+      startTimer();
+    }
+  };
+
+  const handleRestart = () => initializeGame();
+
   const handleConfirmCategoryChange = () => {
-    initializeGame(); 
-    setShowConfirmationModal(false); 
+    initializeGame();
+    setShowConfirmationModal(false);
   };
 
   const handleCancelCategoryChange = () => {
-    setImageCategory(prevImageCategory.current); 
-    setShowConfirmationModal(false); 
+    setImageCategory(imageCategory); 
+    setShowConfirmationModal(false);
   };
 
   const shuffleArray = (array: CardType[]): CardType[] => {
@@ -111,64 +114,18 @@ const Game = () => {
     return array;
   };
 
-  useEffect(() => {
-    if (cards.length > 0 && cards.every((card) => card.matched)) {
-      setShowVictoryScreen(true);
-      stopTimer(); 
-    }
-  }, [cards]);
-
-  const handleCardClick = (card: CardType) => {
-    if (disabled || card.matched || card === firstCard) return;
-
-    if (!firstCard) {
-      setFirstCard(card);
-      if (!isTimerRunning) {
-        startTimer(); 
-      }
-    } else {
-      setSecondCard(card);
-      setDisabled(true);
-      incrementMoves();
-
-      if (firstCard.image === card.image) {
-        setCards((prevCards) =>
-          prevCards.map((c) =>
-            c.image === card.image ? { ...c, matched: true } : c
-          )
-        );
-        incrementScore();
-        setMatchedCards([firstCard.id, card.id]);
-        setTimeout(() => setMatchedCards([]), 500);
-        resetTurn();
-      } else {
-        setTimeout(() => resetTurn(), 1000);
-      }
-    }
-  };
-
-  const resetTurn = () => {
-    setFirstCard(null);
-    setSecondCard(null);
-    setDisabled(false);
-  };
-
-  const handleRestart = () => {
-    initializeGame(); 
-  };
-
   return (
     <div className={`flex flex-col items-center min-h-screen font-${font} bg-background p-4 z-10`}>
       <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
-      <div className={`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 z-0 ${getCardAlignment()}`}>
+      <div className={`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 z-0 ${currentLevelConfig.gridCols}`}>
         {cards.map((card) => (
           <Card
             key={card.id}
             card={card}
-            isFlipped={card === firstCard || card === secondCard}
+            isFlipped={selectedCards.includes(card) || card.matched}
             isMatched={card.matched}
             onClick={() => handleCardClick(card)}
-            className={getCardWidth()}
+            className={currentLevelConfig.cardWidth}
           />
         ))}
       </div>
