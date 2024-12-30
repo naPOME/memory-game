@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   const { setImageCategory } = useImageCategory();
   const settingsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -54,17 +54,18 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
   }, []);
 
   return (
-    <header className={`flex justify-between items-center p-4 bg-background text-secondary font-${font} w-4/5 m-auto rounded-md`}>
-      <div className="flex items-center space-x-3 cursor-pointer" onClick={handleLogoClick}>
-        <span className="text-3xl">🧠</span>
-        <h1 className="text-2xl font-bold text-text">MindMatch</h1>
+    <header className={`flex flex-col md:flex-row justify-between items-center p-2 md:p-4 bg-background text-secondary font-${font} w-full md:w-4/5 mx-auto rounded-md shadow-sm sticky top-0 z-50`}>
+      {/* Logo Section */}
+      <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer" onClick={handleLogoClick}>
+        <span className="text-2xl md:text-3xl">🧠</span>
+        <h1 className="text-xl md:text-2xl font-bold text-text">MindMatch</h1>
       </div>
 
-      
+      {/* Game Stats Section */}
       {location.pathname === '/game' && (
-        <div className="flex items-center space-x-4 font-thin text-xs">
+        <div className="flex items-center space-x-2 md:space-x-4 font-thin text-xs md:text-sm mt-2 md:mt-0">
           <div className="text-center">
-            <p className="">Score</p>
+            <p className="text-secondary">Score</p>
             <p className="text-text">{score}</p>
           </div>
           <div className="text-center">
@@ -78,7 +79,8 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
       )}
 
-      <div className="flex items-center space-x-4">
+      {/* Settings and Category Buttons */}
+      <div className="flex items-center space-x-2 md:space-x-4 mt-2 md:mt-0">
         <button
           onClick={toggleCategoryModal}
           className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
@@ -106,16 +108,17 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
       </div>
 
+      {/* Category Modal */}
       {isCategoryModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={toggleCategoryModal}
         >
           <div
-            className={`bg-background text-text rounded-lg shadow-lg p-6 w-96 max-w-full font-${font}`}
+            className={`bg-background text-text rounded-lg shadow-lg p-4 md:p-6 w-11/12 md:w-96 max-w-full font-${font}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold mb-4 text-center">Select a Category</h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">Select a Category</h2>
             <ImageCategorySelector onSelectCategory={handleCategorySelect} />
           </div>
         </div>
