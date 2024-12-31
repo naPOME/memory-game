@@ -27,9 +27,10 @@ const Game = () => {
   const { width, alignment, gap } = getCardStyles(selectedLevel);
 
   const handleRestart = () => {
-    initializeGame();
-    resetGame();
-    setShowConfirmationModal(false); // Close the modal when restarting
+    initializeGame(); 
+    resetGame(); 
+    setShowVictoryScreen(false); 
+    setShowConfirmationModal(false); 
   };
 
   const handleConfirmCategoryChange = () => {
