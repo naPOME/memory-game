@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { VictoryScreen } from '../components/VictoryScreen';
@@ -8,20 +8,28 @@ import { ConfirmationModal } from '../components/ConfirmationModal';
 import CardGrid from '../components/CardGrid';
 import useGameLogic from '../hooks/useGameLogic';
 import getCardStyles from '../utill/getCardStyles';
+
 const Game = () => {
   const location = useLocation();
   const selectedLevel = location.state?.level || 'easy';
   const { font } = useTheme();
   const { imageCategory, setImageCategory } = useImageCategory();
-  const { stopTimer, resetGame, startTimer, isTimerRunning } = useGame();
+  const { stopTimer, resetGame, startTimer, incrementScore, incrementMoves } = useGame();
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const { cards, firstCard, secondCard, disabled, handleCardClick, initializeGame } = useGameLogic(selectedLevel, imageCategory);
+  const { cards, firstCard, secondCard, disabled, handleCardClick, initializeGame } = useGameLogic(
+    selectedLevel,
+    imageCategory,
+    startTimer,
+    incrementMoves,
+    incrementScore
+  );
   const { width, alignment, gap } = getCardStyles(selectedLevel);
 
   const handleRestart = () => {
     initializeGame();
     resetGame();
+    setShowConfirmationModal(false); // Close the modal when restarting
   };
 
   const handleConfirmCategoryChange = () => {

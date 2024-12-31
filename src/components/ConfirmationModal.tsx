@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface ConfirmationModalProps {
-  isOpen: boolean; // Whether the modal is open
-  onConfirm: () => void; // Callback when the user confirms
-  onCancel: () => void; // Callback when the user cancels
-  message: string; // The message to display
+  isOpen: boolean; 
+  onConfirm: () => void;
+  onCancel: () => void; 
+  message: string; 
 }
 
 export const ConfirmationModal = ({ isOpen, onConfirm, onCancel, message }: ConfirmationModalProps) => {
-  if (!isOpen) return null; // Don't render the modal if it's not open
+  if (!isOpen) return null; 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

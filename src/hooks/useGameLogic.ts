@@ -8,7 +8,13 @@ interface CardType {
   matched: boolean;
 }
 
-const useGameLogic = (selectedLevel: string, imageCategory: string) => {
+const useGameLogic = (
+  selectedLevel: string,
+  imageCategory: string,
+  startTimer: () => void,
+  incrementMoves: () => void,
+  incrementScore: () => void
+) => {
   const [cards, setCards] = useState<CardType[]>([]);
   const [firstCard, setFirstCard] = useState<CardType | null>(null);
   const [secondCard, setSecondCard] = useState<CardType | null>(null);
@@ -51,9 +57,11 @@ const useGameLogic = (selectedLevel: string, imageCategory: string) => {
 
     if (!firstCard) {
       setFirstCard(card);
+      startTimer(); // Start the timer when the first card is clicked
     } else {
       setSecondCard(card);
       setDisabled(true);
+      incrementMoves(); // Increment moves when a second card is clicked
 
       if (firstCard.image === card.image) {
         setCards((prevCards) =>
@@ -61,6 +69,7 @@ const useGameLogic = (selectedLevel: string, imageCategory: string) => {
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
+        incrementScore(); // Increment score when a match is found
         setMatchedCards([firstCard.id, card.id]);
         setTimeout(() => setMatchedCards([]), 500);
         resetTurn();
