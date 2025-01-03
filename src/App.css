@@ -1,0 +1,10 @@
+/* In your global CSS file (e.g., index.css or App.css) */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  #root {
+    height: 100%;
+  }

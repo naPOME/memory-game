@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Header from './components/Header';
 import { useGame } from './Context/GameContext';
 
@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
   return (
     <div>
       <Header elapsedTime={elapsedTime} isTimerRunning={isTimerRunning} />
-      <main>{children}</main> {/* Render the page content */}
+      <main>{children}</main> 
     </div>
   );
 };

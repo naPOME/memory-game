@@ -19,7 +19,7 @@ export const LevelSelector = () => {
   };
 
   return (
-    <div className={`flex flex-col items-center mt-10 min-h-screen bg-background font-${font} text-text`}>
+    <div className={`flex flex-col items-center mt-10 h-[90vh] bg-background font-${font} text-text`}>
       <h2 className="text-3xl font-bold mb-6 text-primary">
         Select Game Level
       </h2>
@@ -41,7 +41,7 @@ export const LevelSelector = () => {
 
       <button
         onClick={handleStart}
-        className="px-8 py-2 mt-16 bg-accent text-text rounded-2xl font-bold text-xl border border-accent hover:bg-accent hover:text-primary-700 transition duration-300 transform hover:scale-105"
+        className="px-8 py-2 mt-16  text-accent rounded-2xl font-bold text-xl border border-accent hover:bg-accent hover:text-primary transition duration-300 transform hover:scale-105"
       >
         START GAME
       </button>

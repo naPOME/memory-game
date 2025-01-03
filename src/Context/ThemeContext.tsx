@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import  { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type Theme = 'theme1' | 'theme2' | 'theme3' | 'theme4' | 'theme5';
 type Font = 'retro' | 'sans' | 'serif' | 'mono' | 'cursive';

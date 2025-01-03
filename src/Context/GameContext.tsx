@@ -38,7 +38,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
 
   
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
     if (isTimerRunning) {
       interval = setInterval(() => {
         setElapsedTime((prevTime) => prevTime + 1);

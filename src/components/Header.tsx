@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ThemeSelector from './ThemeSelector';
 import { FontSelector } from './FontSelector';
 import { useTheme } from '../Context/ThemeContext';

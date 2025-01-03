@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Card from '../components/Card';
 
 interface CardType {
@@ -11,7 +11,7 @@ interface CardGridProps {
   cards: CardType[];
   firstCard: CardType | null;
   secondCard: CardType | null;
-  disabled: boolean;
+  
   handleCardClick: (card: CardType) => void;
   width: string;
   alignment: string;
@@ -22,7 +22,7 @@ const CardGrid: React.FC<CardGridProps> = ({
   cards,
   firstCard,
   secondCard,
-  disabled,
+  
   handleCardClick,
   width,
   alignment,

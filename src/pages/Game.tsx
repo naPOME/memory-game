@@ -50,7 +50,7 @@ const Game = () => {
   }, [cards]);
 
   return (
-    <div className={`flex flex-col items-center min-h-screen font-${font} bg-background p-4 z-10`}>
+    <div className={`flex flex-col items-center h-[90vh] font-${font} bg-background p-4 z-10`}>
       <p className="text-lg text-text mb-4">Level: {selectedLevel}</p>
       <CardGrid
         cards={cards}
