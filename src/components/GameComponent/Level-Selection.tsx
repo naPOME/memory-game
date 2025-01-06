@@ -41,7 +41,7 @@ export const LevelSelector = () => {
 
       <button
         onClick={handleStart}
-        className="px-8 py-2 mt-16  text-accent rounded-2xl font-bold text-xl border border-accent hover:bg-accent hover:text-primary transition duration-300 transform hover:scale-105"
+        className="px-8 py-2 mt-16  text-text rounded-2xl font-bold text-xl border border-accent hover:bg-accent hover:text-primary transition duration-300 transform hover:scale-105"
       >
         START GAME
       </button>
