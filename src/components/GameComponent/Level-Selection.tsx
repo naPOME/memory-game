@@ -21,7 +21,7 @@ export const LevelSelector = () => {
   return (
     <div className={`flex flex-col items-center mt-10 h-[90vh] bg-background font-${font} text-text`}>
       <h2 className="text-3xl font-bold mb-6 text-primary">
-        Select Game Level
+         Game Level
       </h2>
 
       <div className="flex flex-col items-center space-y-6">
