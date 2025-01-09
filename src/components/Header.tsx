@@ -86,7 +86,9 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
           className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-secondary-dark dark:hover:bg-secondary-light transition"
           aria-label="Category"
         >
-          <span className="text-xl">🖼️</span>
+          <span 
+          title='Change image Category'
+          className="text-xl">🖼️</span>
         </button>
 
         <div className="relative" ref={settingsRef}>
