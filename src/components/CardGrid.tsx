@@ -11,6 +11,7 @@ interface CardGridProps {
   cards: CardType[];
   firstCard: CardType | null;
   secondCard: CardType | null;
+  disabled:boolean
   
   handleCardClick: (card: CardType) => void;
   width: string;
@@ -22,7 +23,7 @@ const CardGrid: React.FC<CardGridProps> = ({
   cards,
   firstCard,
   secondCard,
-  
+  disabled,
   handleCardClick,
   width,
   alignment,
@@ -35,9 +36,11 @@ const CardGrid: React.FC<CardGridProps> = ({
           key={card.id}
           card={card}
           isFlipped={card === firstCard || card === secondCard}
+          
           isMatched={card.matched}
-          onClick={() => handleCardClick(card)}
+          onClick={() => !disabled && handleCardClick(card)} 
           className={width}
+          
         />
       ))}
     </div>

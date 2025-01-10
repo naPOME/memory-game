@@ -26,16 +26,16 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   });
 
   useEffect(() => {
-    // Apply the theme to the root element (html)
+    
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   useEffect(() => {
-    // Apply the font class to the body or html element
+    
     const rootElement = document.documentElement;
-    rootElement.classList.remove('retro', 'sans', 'serif', 'mono', 'cursive'); // Clear previous font
-    rootElement.classList.add(font); // Apply new font
+    rootElement.classList.remove('retro', 'sans', 'serif', 'mono', 'cursive'); 
+    rootElement.classList.add(font); 
     localStorage.setItem('font', font);
   }, [font]);
 

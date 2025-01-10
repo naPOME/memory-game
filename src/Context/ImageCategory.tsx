@@ -8,9 +8,9 @@ interface ImageCategoryContextType {
 }
 
 const ImageCategoryContext = createContext<ImageCategoryContextType>({
-  imageCategory: 'Nature', // Default category
-  setImageCategory: () => {}, // Placeholder function
-  resetGame: () => {}, // Placeholder function
+  imageCategory: 'Nature', 
+  setImageCategory: () => {}, 
+  resetGame: () => {}, 
 });
 
 export const ImageCategoryProvider = ({ children }: { children: React.ReactNode }) => {

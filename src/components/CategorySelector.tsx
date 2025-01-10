@@ -1,7 +1,15 @@
-import React from 'react';
-import { useTheme } from '../Context/ThemeContext';
 
-const imageCategories = [
+
+interface Category {
+  name: string;
+  icon: string;
+}
+
+interface ImageCategorySelectorProps {
+  onSelectCategory: (categoryName: string) => void;
+}
+
+const imageCategories: Category[] = [
   { name: 'Animals', icon: '🐾' },
   { name: 'Nature', icon: '🌿' },
   { name: 'People', icon: '👥' },
@@ -9,8 +17,8 @@ const imageCategories = [
   { name: 'Other', icon: '✨' },
 ];
 
-const ImageCategorySelector = ({ onSelectCategory }) => {
-  const { theme } = useTheme();
+const ImageCategorySelector = ({ onSelectCategory }:ImageCategorySelectorProps) => {
+  
 
   return (
     <div className="space-y-4">
@@ -19,11 +27,9 @@ const ImageCategorySelector = ({ onSelectCategory }) => {
           <button
             key={category.name}
             onClick={() => onSelectCategory(category.name)}
-            className="flex flex-col items-center justify-center px-6 py-4 rounded-lg transition-all transform hover:scale-105 hover:shadow-lg"
+            className="flex flex-col bg-primary border-2 border-accent text-text items-center justify-center px-6 py-4 rounded-lg transition-all transform hover:scale-105 hover:shadow-lg"
             style={{
-              backgroundColor: theme.primary,
-              color: theme.text,
-              border: `2px solid ${theme.accent}`,
+             
               boxShadow: `0 4px 6px rgba(0, 0, 0, 0.1)`,
             }}
           >

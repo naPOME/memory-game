@@ -19,7 +19,7 @@ const useGameLogic = (
   const [firstCard, setFirstCard] = useState<CardType | null>(null);
   const [secondCard, setSecondCard] = useState<CardType | null>(null);
   const [disabled, setDisabled] = useState(false);
-  const [matchedCards, setMatchedCards] = useState<number[]>([]);
+  const [matchedCards, setMatchedCards] = useState<number[]>([]); 
   const prevImageCategory = useRef(imageCategory);
 
   const getCardCount = () => {
@@ -49,7 +49,7 @@ const useGameLogic = (
     setFirstCard(null);
     setSecondCard(null);
     setDisabled(false);
-    setMatchedCards([]);
+    setMatchedCards([]); 
   };
 
   const handleCardClick = (card: CardType) => {
@@ -57,11 +57,11 @@ const useGameLogic = (
 
     if (!firstCard) {
       setFirstCard(card);
-      startTimer(); // Start the timer when the first card is clicked
+      startTimer(); 
     } else {
       setSecondCard(card);
       setDisabled(true);
-      incrementMoves(); // Increment moves when a second card is clicked
+      incrementMoves(); 
 
       if (firstCard.image === card.image) {
         setCards((prevCards) =>
@@ -69,9 +69,9 @@ const useGameLogic = (
             c.image === card.image ? { ...c, matched: true } : c
           )
         );
-        incrementScore(); // Increment score when a match is found
-        setMatchedCards([firstCard.id, card.id]);
-        setTimeout(() => setMatchedCards([]), 500);
+        incrementScore(); 
+        setMatchedCards([firstCard.id, card.id]); 
+        setTimeout(() => setMatchedCards([]), 500); 
         resetTurn();
       } else {
         setTimeout(() => resetTurn(), 1000);
@@ -101,6 +101,7 @@ const useGameLogic = (
     firstCard,
     secondCard,
     disabled,
+    matchedCards,
     handleCardClick,
     initializeGame,
   };

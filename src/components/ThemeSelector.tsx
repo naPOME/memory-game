@@ -1,7 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext';
 
-const themes = [
+
+interface Themes{
+  name:string;
+  primary:string;
+  secondary:string;
+  accent:string;
+  background:string;
+  text:string;
+}
+
+type themeType= 'theme1' | 'theme2' | 'theme3' | 'theme4' | 'theme5';
+
+const themes:Themes[] = [
   {
     name: 'theme1', // Iceberg Light
     primary: '#2D539E',
@@ -50,24 +62,24 @@ const ThemeSelector = () => {
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
-  const handleThemeSelect = (selectedTheme: string) => {
+  const handleThemeSelect = (selectedTheme:themeType) => {
     setTheme(selectedTheme);
     setModalOpen(false);
   };
 
   const currentTheme = themes.find((t) => t.name === theme) || themes[0];
 
-  // Function to determine text color based on background brightness
+  
   const getTextColor = (backgroundColor: string) => {
     const hex = backgroundColor.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 128 ? '#000000' : '#FFFFFF'; // Use black or white text based on brightness
+    return brightness > 128 ? '#000000' : '#FFFFFF';
   };
 
-  // Close modal on Escape key press
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -81,7 +93,7 @@ const ThemeSelector = () => {
 
   return (
     <div className={`relative theme-selector font-extralight text-xs font-${font}`}>
-      {/* Theme Selector Button */}
+     
       <button
         onClick={toggleModal}
         aria-expanded={isModalOpen}
@@ -101,36 +113,36 @@ const ThemeSelector = () => {
         />
       </button>
 
-      {/* Modal Overlay */}
+   
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setModalOpen(false)}
         >
-          {/* Modal Content */}
+        
           <div
             id="theme-modal"
             className={`rounded-lg shadow-lg p-6 w-96 max-w-full font-${font}`}
             style={{ backgroundColor: currentTheme.background }}
-            onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+            onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-bold mb-4" style={{ color: currentTheme.text }}>
               Select a Theme
             </h2>
             <div className="space-y-3">
               {themes.map((t) => {
-                const textColor = getTextColor(currentTheme.background); // Dynamically determine text color
+                const textColor = getTextColor(currentTheme.background); 
                 return (
                   <button
                     key={t.name}
-                    onClick={() => handleThemeSelect(t.name)}
+                    onClick={() => handleThemeSelect(t.name as themeType)}
                     className={`flex items-center w-full px-4 py-2 rounded-lg transition-all hover:scale-105`}
                     style={{
-                      backgroundColor: currentTheme.background, // Same background for all buttons
-                      color: textColor, // Use dynamically determined text color
+                      backgroundColor: currentTheme.background, 
+                      color: textColor,
                     }}
                   >
-                    {/* Three rounded colors representing primary, secondary, and accent */}
+                   
                     <div className="flex space-x-2">
                       <div
                         className="w-6 h-6 rounded-full border-2 hover:border-primary"

@@ -13,7 +13,7 @@ interface HeaderProps {
   isTimerRunning: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
+const Header: React.FC<HeaderProps> = ({ elapsedTime }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const { font } = useTheme();
@@ -79,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
       )}
 
-      {/* Settings and Category Buttons */}
+      
       <div className="flex items-center space-x-2 md:space-x-4 mt-2 md:mt-0">
         <button
           onClick={toggleCategoryModal}
@@ -110,7 +110,7 @@ const Header: React.FC<HeaderProps> = ({ elapsedTime, isTimerRunning }) => {
         </div>
       </div>
 
-      {/* Category Modal */}
+      
       {isCategoryModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"

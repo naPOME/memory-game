@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { VictoryScreen } from '../components/VictoryScreen';
@@ -13,7 +13,7 @@ const Game = () => {
   const location = useLocation();
   const selectedLevel = location.state?.level || 'easy';
   const { font } = useTheme();
-  const { imageCategory, setImageCategory } = useImageCategory();
+  const { imageCategory } = useImageCategory();
   const { stopTimer, resetGame, startTimer, incrementScore, incrementMoves } = useGame();
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
