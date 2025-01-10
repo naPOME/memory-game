@@ -32,8 +32,8 @@ export const LevelSelector = () => {
             onClick={() => handleLevelChange(level)}
             className={`btn px-6 py-3 rounded-full text-xl font-bold transition duration-300 
               ${selectedLevel === level 
-                ? 'bg-primary text-background shadow-xl hover:bg-primary-light' 
-                : 'bg-secondary text-background hover:bg-secondary-light'
+                ? 'bg-primary text-background shadow-xl hover:bg-gray-500' 
+                : 'bg-secondary text-background hover:bg-accent'
               }`}
           />
         ))}
