@@ -16,7 +16,7 @@ const Card: React.FC<CardProps> = ({ card, isFlipped, isMatched, onClick, classN
   return (
     <div
       onClick={onClick}
-      className={`card ${className} cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d ${
+      className={`card ${className} cursor-pointer rounded-lg shadow-md transition-transform transform-style-preserve-3d  ${
         isFlipped || isMatched ? 'flipped' : ''
       } ${isMatched ? 'animate-pulse' : ''}`}
     >

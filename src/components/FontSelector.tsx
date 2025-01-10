@@ -58,7 +58,7 @@ export const FontSelector: React.FC = () => {
             <li key={f.className}>
             <button
                 onClick={() => handleFontChange(f.className as FontType)}
-                className={`w-full text-left px-4 py-2 ${
+                className={`w-full text-left px-4 py-2 text-secondary hover:bg-accent ${
                   font === f.className ? 'font-bold' : ''
                 }`}
               >

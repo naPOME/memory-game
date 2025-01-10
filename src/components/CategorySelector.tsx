@@ -12,7 +12,7 @@ interface ImageCategorySelectorProps {
 const imageCategories: Category[] = [
   { name: 'Animals', icon: '🐾' },
   { name: 'Nature', icon: '🌿' },
-  { name: 'People', icon: '👥' },
+  { name: 'Movies', icon: '🍿 ' },
   { name: 'Cars', icon: '🚗' },
   { name: 'Other', icon: '✨' },
 ];
@@ -34,7 +34,7 @@ const ImageCategorySelector = ({ onSelectCategory }:ImageCategorySelectorProps) 
             }}
           >
             <span className="text-4xl mb-2">{category.icon}</span>
-            <span className="text-lg font-semibold">{category.name}</span>
+            <span className="text-lg font-semibold text-accent">{category.name}</span>
           </button>
         ))}
       </div>
